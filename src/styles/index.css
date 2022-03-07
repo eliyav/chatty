@@ -1,0 +1,46 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+html {
+  background-color: rgb(151, 151, 151);
+}
+
+.app {
+  display: flex;
+  height: 100vh;
+  max-width: 150ch;
+  margin: auto;
+  border: 2px solid black;
+}
+
+.side-bar {
+  display: inline-flex;
+  flex-flow: column nowrap;
+  width: 20ch;
+  background-color: rgb(63, 63, 63);
+  margin-right: 0;
+  border: none;
+}
+
+.side-bar > button {
+  background-color: unset;
+  color: white;
+  border: none;
+  margin: 1em auto;
+  padding: 1em 0;
+  width: 90%;
+  border-radius: 6px;
+}
+
+.side-bar > button:hover {
+  background-color: rgba(245, 245, 245, 0.5);
+  color: white;
+}
+
+.chat-content {
+  display: inline-block;
+  width: 100%;
+  background-color: grey;
+}
