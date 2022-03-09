@@ -1,6 +1,21 @@
+@font-face {
+  font-family: Uni-Sans-Heavy;
+  src: url(/src/fonts/uni-sans/Uni\ Sans\ Heavy.otf);
+}
+
+@font-face {
+  font-family: Uni-Sans-Thin;
+  src: url(/src/fonts/uni-sans/Uni\ Sans\ Thin.otf);
+}
 * {
   box-sizing: border-box;
   margin: 0;
+  font-family: "Uni-Sans-Thin";
+}
+
+:root {
+  --primary: rgb(210, 223, 223);
+  --secondary: rgb(202, 194, 194);
 }
 
 html {
@@ -18,10 +33,12 @@ html {
 .side-bar {
   display: inline-flex;
   flex-flow: column nowrap;
+  align-items: center;
   width: 20ch;
   background-color: rgb(63, 63, 63);
   margin-right: 0;
   border: none;
+  font-family: "Uni-Sans-Heavy";
 }
 
 .side-bar > button {
@@ -32,6 +49,7 @@ html {
   padding: 1em 0;
   width: 90%;
   border-radius: 6px;
+  font-family: "Uni-Sans-Heavy";
 }
 
 .side-bar > button:hover {
@@ -39,8 +57,34 @@ html {
   color: white;
 }
 
-.chat-content {
-  display: inline-block;
+.side-bar.label {
+  border-top: 1px solid white;
+  color: white;
+  margin: 1em;
+  padding: 1em;
+}
+
+.content {
+  display: flex;
+  flex-flow: row wrap;
   width: 100%;
   background-color: grey;
+  overflow-y: scroll;
+}
+
+.chat-room {
+  padding: 1em;
+  margin: 1em;
+  width: 30ch;
+  min-width: 23ch;
+  height: 30ch;
+  border: 1px solid black;
+}
+
+.primary {
+  background-color: var(--primary);
+}
+
+.secondary {
+  background-color: var(--secondary);
 }
