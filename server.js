@@ -43,13 +43,25 @@ io.on("connection", (socket) => {
   });
   socket.on("create-room", (socketId, name) => {
     const roomKey = createRoom();
-    rooms.set(roomKey, { key: roomKey, members: { [name]: socketId } });
+    rooms.set(roomKey, { key: roomKey, members: [{ [name]: socketId }] });
+    socket.join(roomKey);
     socket.emit("room-key", roomKey);
   });
 
   socket.on("request-rooms", () => {
     const roomsList = Array.from(rooms.values());
     socket.emit("rooms-list", JSON.stringify(roomsList));
+  });
+
+  socket.on("join-chat-room", (roomKey, socketId, name) => {
+    const members = rooms.get(roomKey).members;
+    const memberExists = members.find((member) => {
+      return Object.values(member) == socketId;
+    });
+    if (!memberExists) {
+      socket.join(roomKey);
+      rooms.get(roomKey).members.push({ [name]: socketId });
+    }
   });
 });
 

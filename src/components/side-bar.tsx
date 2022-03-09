@@ -1,18 +1,20 @@
 import React from "react";
+import { ActiveRooms } from "./active-rooms";
+import { Navigation } from "./navigation";
 
 interface SidebarProps {
-  text: string;
-  onClick: () => void;
+  navItems: {
+    text: string;
+    onClick: () => void;
+  }[];
+  active: string[];
 }
 
-export const Sidebar: React.VFC<{ items: SidebarProps[] }> = ({ items }) => {
+export const Sidebar: React.VFC<SidebarProps> = ({ navItems, active }) => {
   return (
     <div className="side-bar">
-      {items.map((item, idx) => (
-        <button key={idx} onClick={item.onClick}>
-          {item.text}
-        </button>
-      ))}
+      <Navigation items={navItems} />
+      <ActiveRooms rooms={active} />
     </div>
   );
 };
