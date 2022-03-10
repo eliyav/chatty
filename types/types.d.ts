@@ -1,4 +1,6 @@
 export interface Room {
   key: string;
-  members: { [key: string]: string };
+  name: string;
+  members: { [member: string]: string }[];
+  messages: string[];
 }

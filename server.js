@@ -33,19 +33,21 @@ const io = require("socket.io")(server);
 const rooms = new Map();
 
 io.on("connection", (socket) => {
-  socket.emit("connectedMessage", "socket is connected");
-
   socket.on("chat-info-request", (name) => {
     socket.emit("chat-info", database.get(name));
   });
-  socket.on("message", (message) => {
-    console.log(message);
-  });
+
   socket.on("create-room", (socketId, name) => {
     const roomKey = createRoom();
-    rooms.set(roomKey, { key: roomKey, members: [{ [name]: socketId }] });
+    rooms.set(roomKey, {
+      key: roomKey,
+      name: roomKey,
+      members: [{ [name]: socketId }],
+      messages: [],
+    });
+    const room = rooms.get(roomKey);
     socket.join(roomKey);
-    socket.emit("room-key", roomKey);
+    socket.emit("created-room", room);
   });
 
   socket.on("request-rooms", () => {
@@ -61,7 +63,13 @@ io.on("connection", (socket) => {
     if (!memberExists) {
       socket.join(roomKey);
       rooms.get(roomKey).members.push({ [name]: socketId });
+      const room = rooms.get(roomKey);
+      socket.emit("joined-room", room);
     }
+  });
+
+  socket.on("message-room", (message, roomKey) => {
+    socket.to(roomKey).emit("room-message", message);
   });
 });
 

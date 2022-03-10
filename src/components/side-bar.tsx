@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useContext } from "react";
+import { MyContext } from "../app";
 import { ActiveRooms } from "./active-rooms";
 import { Navigation } from "./navigation";
 
@@ -7,14 +8,15 @@ interface SidebarProps {
     text: string;
     onClick: () => void;
   }[];
-  active: string[];
+  displayRoom: (roomKey: string) => void;
 }
 
-export const Sidebar: React.VFC<SidebarProps> = ({ navItems, active }) => {
+export const Sidebar: React.VFC<SidebarProps> = ({ navItems, displayRoom }) => {
+  const context = useContext(MyContext);
   return (
     <div className="side-bar">
       <Navigation items={navItems} />
-      <ActiveRooms rooms={active} />
+      <ActiveRooms rooms={context.activeRooms} displayRoom={displayRoom} />
     </div>
   );
 };

@@ -65,11 +65,15 @@ html {
 }
 
 .content {
-  display: flex;
-  flex-flow: row wrap;
   width: 100%;
   background-color: grey;
   overflow-y: scroll;
+}
+
+.chat-rooms {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-around;
 }
 
 .chat-room {
@@ -87,4 +91,46 @@ html {
 
 .secondary {
   background-color: var(--secondary);
+}
+
+.rooms-shortcut {
+  overflow-y: scroll;
+}
+
+.rooms-shortcut::-webkit-scrollbar {
+  display: none;
+}
+
+.rooms-shortcut {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.room-shortcut-image {
+  position: relative;
+  display: block;
+  height: 80px;
+  width: 80px;
+  background-color: rgba(245, 245, 245, 0.5);
+  background-image: url(/src/assets/room-icon.png);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  border-radius: 20px;
+  margin-bottom: 1em;
+  border: 2px solid black;
+}
+
+.room-shortcut-image:hover {
+  animation: room-shortcut 1s forwards 0s;
+}
+
+@keyframes room-shortcut {
+  100% {
+    background-color: whitesmoke;
+  }
+}
+
+.chat-room-window {
+  width: 100%;
 }

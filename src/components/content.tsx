@@ -1,34 +1,47 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Socket } from "socket.io-client";
 import { DefaultEventsMap } from "socket.io/dist/typed-events";
+import { MyContext } from "../app";
+import { ChatRoom } from "./chat-room";
 import { ChatRooms } from "./chat-rooms";
 
 interface ContentProps {
-  data: { type: string; content: any[] };
+  roomKey: string;
+  display: string;
   socket: Socket<DefaultEventsMap, DefaultEventsMap>;
 }
 
 export const Content: React.VFC<ContentProps> = ({
-  data: { type, content },
+  display,
   socket,
+  roomKey: roomKey,
 }) => {
-  console.log(content);
-  console.log(socket);
-  let display;
-  switch (type) {
+  const content = useContext(MyContext);
+  let displayedContent;
+
+  switch (display) {
     case "Chat Rooms":
-      display = (
+      displayedContent = (
         <ChatRooms
-          data={content}
+          data={content.rooms!}
           joinRoom={(roomKey) => {
             socket.emit("join-chat-room", roomKey, socket.id, Math.random());
           }}
         />
       );
       break;
+    case "Chat Room":
+      displayedContent = (
+        <ChatRoom
+          messages={content.activeRooms[roomKey].messages}
+          members={content.activeRooms[roomKey].members}
+          name={content.activeRooms[roomKey].name}
+        />
+      );
+      break;
     default: {
-      display = <div className="chat-content">Example Chat</div>;
+      displayedContent = <div className="chat-content">Example Chat</div>;
     }
   }
-  return <div className="content">{display}</div>;
+  return <div className="content">{displayedContent}</div>;
 };

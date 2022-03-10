@@ -8,16 +8,18 @@ interface ChatRooms {
 export const ChatRooms: React.VFC<ChatRooms> = ({ data, joinRoom }) => {
   return (
     <>
-      {data.map((item, idx) => (
-        <div
-          className={`chat-room ${idx % 2 === 0 ? "primary" : "secondary"}`}
-          key={idx}
-        >
-          <p>Room Key: {item.key}</p>
-          <p>Members: {item.members.length}</p>
-          <button onClick={() => joinRoom(item.key)}>Join Room</button>
-        </div>
-      ))}
+      <div className="chat-rooms">
+        {data.map((item, idx) => (
+          <div
+            className={`chat-room ${idx % 2 === 0 ? "primary" : "secondary"}`}
+            key={idx}
+          >
+            <p>Room Key: {item.key}</p>
+            <p>Members: {item.members.length}</p>
+            <button onClick={() => joinRoom(item.key)}>Join Room</button>
+          </div>
+        ))}
+      </div>
     </>
   );
 };
