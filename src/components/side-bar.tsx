@@ -1,22 +1,20 @@
-import React, { useContext } from "react";
-import { MyContext } from "../app";
-import { ActiveRooms } from "./active-rooms";
+import React from "react";
 import { Navigation } from "./navigation";
+import { ActiveRooms } from "./active-rooms";
 
 interface SidebarProps {
   navItems: {
     text: string;
-    onClick: () => void;
+    path: string;
+    onClick?: () => void;
   }[];
-  displayRoom: (roomKey: string) => void;
 }
 
-export const Sidebar: React.VFC<SidebarProps> = ({ navItems, displayRoom }) => {
-  const context = useContext(MyContext);
+export const Sidebar: React.VFC<SidebarProps> = ({ navItems }) => {
   return (
     <div className="side-bar">
       <Navigation items={navItems} />
-      <ActiveRooms rooms={context.activeRooms} displayRoom={displayRoom} />
+      {/* <ActiveRooms rooms={context.activeRooms} displayRoom={displayRoom} /> */}
     </div>
   );
 };

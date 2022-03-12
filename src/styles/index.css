@@ -41,20 +41,20 @@ html {
   font-family: "Uni-Sans-Heavy";
 }
 
-.side-bar > button {
+.nav-item {
+  margin: 1.2em auto;
+}
+
+.nav-item > button {
   background-color: unset;
-  color: white;
   border: none;
-  margin: 1em auto;
-  padding: 1em 0;
-  width: 90%;
-  border-radius: 6px;
+  font-size: 1.2em;
+  color: white;
   font-family: "Uni-Sans-Heavy";
 }
 
-.side-bar > button:hover {
-  background-color: rgba(245, 245, 245, 0.5);
-  color: white;
+.nav-item > button:hover {
+  color: gray;
 }
 
 .side-bar.label {
@@ -133,4 +133,26 @@ html {
 
 .chat-room-window {
   width: 100%;
+  display: flex;
+  flex-flow: column nowrap;
+  flex-grow: 1;
+}
+
+.friends-list {
+  display: flex;
+  flex-flow: column nowrap;
+  flex-grow: 1;
+  background-color: rgba(212, 191, 191, 0.603);
+}
+
+.friend {
+  margin: 0.5em 0;
+  padding: 1em 0;
+  border-top: 1px solid black;
+  border-bottom: 1px solid black;
+  background-color: rgba(67, 67, 136, 0.212);
+}
+
+.friend > span {
+  padding: 0 1em;
 }

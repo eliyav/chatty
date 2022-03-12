@@ -1,93 +1,102 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import { io } from "socket.io-client";
-import { Room } from "../types/types";
-import { Content } from "./components/content";
 import { Sidebar } from "./components/side-bar";
-
-export const MyContext = React.createContext<{
-  rooms: any[];
-  activeRooms: {
-    [room: string]: {
-      key: string;
-      name: string;
-      members: { [member: string]: string }[];
-      messages: string[];
-    };
-  };
-}>({ rooms: [], activeRooms: {} });
+import { Routes, Route } from "react-router-dom";
+import { FriendsList } from "./components/friends-list";
+import { HomePage } from "./components/home-page";
+import { Friend } from "./components/friend";
+import { useDispatch, useSelector } from "react-redux";
+import { load } from "./store/slices/friends-slice";
 
 export const App: React.VFC = () => {
   const socket = useRef(io(`ws://${window.location.host}`));
-  const [state, setState] = useState<{
-    rooms: any[];
-    activeRooms: {
-      [room: string]: {
-        key: string;
-        name: string;
-        members: { [member: string]: string }[];
-        messages: string[];
-      };
-    };
-  }>({ rooms: [], activeRooms: {} });
-  const [display, setDisplay] = useState<string>("");
-  const [messages, setRoomKey] = useState<string>("");
+  const dispatch = useDispatch();
+  const friends = useSelector(
+    (state: { friends: { list: [] } }) => state.friends.list
+  ) as { name: string; isOnline: boolean }[];
+  console.log(friends);
 
   useEffect(() => {
-    socket.current.on("rooms-list", (rooms: string) => {
-      const roomsList: Room[] = JSON.parse(rooms);
-      setState((prevState) => ({ ...prevState, rooms: roomsList }));
+    socket.current.on("friends-list-res", (friendsList) => {
+      console.log(friendsList);
+      dispatch(load(friendsList));
     });
-
-    socket.current.on("created-room", (room: Room) => {
-      setState((prevState) => ({
-        ...prevState,
-        activeRooms: { ...prevState.activeRooms, [room.key]: room },
-      }));
-    });
-
-    socket.current.on("joined-room", (room: Room) => {
-      setState((prevState) => ({
-        ...prevState,
-        activeRooms: { ...prevState.activeRooms, [room.key]: room },
-      }));
-    });
-
-    socket.current.on("room-message", (message, roomKey) => {});
   }, []);
 
   return (
     <div className="app">
-      <MyContext.Provider value={state}>
-        <Sidebar
-          navItems={[
-            {
-              text: "Friends List",
-              onClick: () => {},
+      <Sidebar
+        navItems={[
+          {
+            text: "Friends",
+            path: "/friends-list",
+            onClick: () => {},
+          },
+          {
+            text: "Login in as Winx",
+            path: "",
+            onClick: () => {
+              socket.current.emit("login", "Winx");
             },
-            {
-              text: "Create Room",
-              onClick: () =>
-                socket.current.emit(
-                  "create-room",
-                  socket.current.id,
-                  Math.random()
-                ),
+          },
+          {
+            text: "Login as RU2",
+            path: "",
+            onClick: () => {
+              socket.current.emit("login", "RU2");
             },
-            {
-              text: "Chat Rooms",
-              onClick: () => {
-                setDisplay("Chat Rooms");
-                socket.current.emit("request-rooms");
-              },
-            },
-          ]}
-          displayRoom={(roomKey: string) => {
-            setRoomKey(roomKey);
-            setDisplay("Chat Room");
-          }}
-        />
-        <Content roomKey={messages} display={display} socket={socket.current} />
-      </MyContext.Provider>
+          },
+        ]}
+      />
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/friends-list" element={<FriendsList friends={friends} />}>
+          {/* <Route path="/friends-list/:id" element={<Friend />} /> */}
+        </Route>
+      </Routes>
     </div>
   );
 };
+
+// export const MyContext = React.createContext<{
+//   rooms: any[];
+//   activeRooms: {
+//     [room: string]: {
+//       key: string;
+//       name: string;
+//       members: { [member: string]: string }[];
+//       messages: string[];
+//     };
+//   };
+// }>({ rooms: [], activeRooms: {} });
+
+// const [state, setState] = useState<{
+//   rooms: any[];
+//   activeRooms: {
+//     [room: string]: {
+//       key: string;
+//       name: string;
+//       members: { [member: string]: string }[];
+//       messages: string[];
+//     };
+//   };
+// }>({ rooms: [], activeRooms: {} });
+// const [messages, setRoomKey] = useState<string>("");
+
+// socket.current.on("rooms-list", (rooms: string) => {
+//   const roomsList: Room[] = JSON.parse(rooms);
+//   setState((prevState) => ({ ...prevState, rooms: roomsList }));
+// });
+// socket.current.on("created-room", (room: Room) => {
+//   setState((prevState) => ({
+//     ...prevState,
+//     activeRooms: { ...prevState.activeRooms, [room.key]: room },
+//   }));
+// });
+// socket.current.on("joined-room", (room: Room) => {
+//   setState((prevState) => ({
+//     ...prevState,
+//     activeRooms: { ...prevState.activeRooms, [room.key]: room },
+//   }));
+// });
+// socket.current.on("room-message", (message, roomKey) => {});
