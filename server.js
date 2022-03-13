@@ -46,6 +46,9 @@ io.on("connection", (socket) => {
     });
   });
 
+  socket.on("send-message", (recepient, sender, message) => {
+    socket.to(recepient).emit("received-message", sender, message);
+  });
   // socket.on("chat-info-request", (name) => {
   //   socket.emit("chat-info", database.get(name));
   // });

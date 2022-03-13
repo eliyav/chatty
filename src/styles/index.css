@@ -156,3 +156,36 @@ html {
 .friend > span {
   padding: 0 1em;
 }
+
+.chat {
+  display: inline-flex;
+  flex-flow: column nowrap;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.767);
+}
+
+.chat-messages {
+  flex-grow: 1;
+  min-width: 100px;
+  max-width: 800px;
+  width: 100%;
+  background-color: grey;
+  margin: 1em auto;
+}
+
+.chat-input {
+  min-width: 100px;
+  max-width: 800px;
+  width: 100%;
+  margin: 1em auto;
+}
+
+.chat-send {
+  position: relative;
+  color: white;
+  margin: 1em;
+  padding: 1em;
+  border: 1px solid white;
+}
