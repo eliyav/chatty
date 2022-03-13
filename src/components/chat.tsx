@@ -1,7 +1,8 @@
 import React, { useRef } from "react";
+import { Message } from "../../types/types";
 
 interface ChatProps {
-  history: string[];
+  history: Message[];
   message: (message: string) => void;
 }
 
@@ -10,7 +11,14 @@ export const Chat: React.VFC<ChatProps> = ({ message, history }) => {
   return (
     <div className="chat">
       <div className="chat-messages">
-        {history && history.map((h, idx) => <p key={idx}>{h}</p>)}
+        {history &&
+          history.map((message, idx) => (
+            <div className="chat-item" key={idx}>
+              <p className="chat-user">By: {message.by}</p>
+              <p className="chat-message">{message.message}</p>
+              <p className="chat-time">{message.time}</p>
+            </div>
+          ))}
       </div>
       <textarea
         ref={textRef}

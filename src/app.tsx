@@ -8,20 +8,23 @@ import { Friend } from "./components/friend";
 import { useDispatch, useSelector } from "react-redux";
 import { load } from "./store/slices/friends-slice";
 import { Chat } from "./components/chat";
-import { saveMessage } from "./store/slices/chat-slice";
+import {
+  saveReceivedMessage,
+  saveSentMessage,
+} from "./store/slices/chat-slice";
+import { Message } from "../types/types";
 
 export const App: React.VFC = () => {
-  const socket = useRef(io(`ws://${window.location.host}`));
   const [userName, setUserName] = useState<string>("");
-  const chatMatch = useMatch("/chat/:id");
+  const socket = useRef(io(`ws://${window.location.host}`));
   const dispatch = useDispatch();
+  const chatMatch = useMatch("/chat/:id");
   const friends = useSelector(
     (state: { friends: { list: [] } }) => state.friends.list
   ) as { name: string; isOnline: boolean }[];
   const chatHistory = useSelector(
     (state: { chat: { history: {} } }) => state.chat.history
-  ) as { [user: string]: string[] }[];
-  console.log(chatHistory);
+  ) as { [user: string]: Message[] }[];
 
   useEffect(() => {
     socket.current.on("friends-list-res", (friendsList) => {
@@ -29,7 +32,7 @@ export const App: React.VFC = () => {
     });
 
     socket.current.on("received-message", (sender, message) => {
-      dispatch(saveMessage([sender, message]));
+      dispatch(saveReceivedMessage([sender, message]));
     });
   }, []);
 
@@ -77,7 +80,9 @@ export const App: React.VFC = () => {
                   userName,
                   message
                 );
-                dispatch(saveMessage([chatMatch?.params.id, message]));
+                dispatch(
+                  saveSentMessage([userName, chatMatch?.params.id, message])
+                );
               }}
             />
           }

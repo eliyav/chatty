@@ -7,6 +7,12 @@
   font-family: Uni-Sans-Thin;
   src: url(/src/fonts/uni-sans/Uni\ Sans\ Thin.otf);
 }
+
+@font-face {
+  font-family: Uni-Sans-Regular;
+  src: url(/src/fonts/uni-sans/Uni\ Sans\ Regular.ttf);
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -25,7 +31,7 @@ html {
 .app {
   display: flex;
   height: 100vh;
-  max-width: 150ch;
+  max-width: 1000px;
   margin: auto;
   border: 2px solid black;
 }
@@ -34,7 +40,7 @@ html {
   display: inline-flex;
   flex-flow: column nowrap;
   align-items: center;
-  width: 20ch;
+  width: 100px;
   background-color: rgb(63, 63, 63);
   margin-right: 0;
   border: none;
@@ -79,9 +85,9 @@ html {
 .chat-room {
   padding: 1em;
   margin: 1em;
-  width: 30ch;
-  min-width: 23ch;
-  height: 30ch;
+  width: 100px;
+  min-width: 70px;
+  height: 100px;
   border: 1px solid black;
 }
 
@@ -173,6 +179,34 @@ html {
   width: 100%;
   background-color: grey;
   margin: 1em auto;
+  overflow-y: scroll;
+}
+
+.chat-item {
+  background-color: rgba(63, 63, 63, 0.5);
+  margin: 0.5em;
+  padding: 0.5em;
+  border-radius: 10px;
+  word-wrap: break-word;
+  color: whitesmoke;
+}
+
+.chat-user {
+  font-weight: bold;
+  color: aliceblue;
+}
+
+.chat-time {
+  text-align: right;
+}
+
+.chat-message {
+  padding-left: 0.5em;
+}
+
+.chat-item > * {
+  margin: 0.5em;
+  font-family: "Uni-Sans-Regular";
 }
 
 .chat-input {
@@ -180,6 +214,8 @@ html {
   max-width: 800px;
   width: 100%;
   margin: 1em auto;
+  font-family: "Uni-Sans-Regular";
+  resize: none;
 }
 
 .chat-send {
